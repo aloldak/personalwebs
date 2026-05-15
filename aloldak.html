@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AL OLDAK</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background-color: #d4d0c8;
+      background-image: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 4px,
+        rgba(255,255,255,0.3) 4px,
+        rgba(255,255,255,0.3) 5px
+      );
+      font-family: 'Times New Roman', Times, serif;
+      color: #111;
+      min-height: 100vh;
+    }
+
+    a { color: #4a0080; text-decoration: underline; }
+    a:hover { color: #cc0000; }
+    a:visited { color: #800040; }
+
+    .outer-frame {
+      max-width: 820px;
+      margin: 12px auto;
+      border: 2px solid #ffffff;
+      border-right-color: #404040;
+      border-bottom-color: #404040;
+      background: #d4d0c8;
+      box-shadow: 2px 2px 0 #000;
+    }
+
+    /* TITLEBAR */
+    .titlebar {
+      background: linear-gradient(to right, #000080, #1084d0);
+      padding: 4px 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      user-select: none;
+    }
+    .titlebar-icon { font-size: 13px; }
+    .titlebar-text {
+      flex: 1;
+      font-family: 'Times New Roman', serif;
+      font-size: 12px;
+      color: white;
+      font-weight: bold;
+    }
+    .titlebar-btns { display: flex; gap: 2px; }
+    .titlebar-btn {
+      width: 16px; height: 14px;
+      background: #d4d0c8;
+      border: 1px solid #fff;
+      border-right-color: #404040;
+      border-bottom-color: #404040;
+      font-size: 9px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      font-weight: bold;
+      color: #000;
+    }
+
+    /* ADDRESS BAR */
+    .addressbar {
+      background: #d4d0c8;
+      border-bottom: 2px solid #808080;
+      border-top: 1px solid #fff;
+      padding: 3px 6px;
+      font-family: 'Times New Roman', serif;
+      font-size: 11px;
+      color: #444;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .addressbar-label { color: #000; font-weight: bold; }
+    .addressbar-input {
+      flex: 1;
+      background: white;
+      border: 1px inset #808080;
+      padding: 1px 4px;
+      font-family: 'Times New Roman', serif;
+      font-size: 11px;
+      color: #000;
+    }
+
+    /* MARQUEE */
+    .marquee-wrap {
+      background: #000080;
+      padding: 3px 0;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .marquee-inner {
+      display: inline-block;
+      font-family: 'Times New Roman', serif;
+      font-size: 12px;
+      color: #ffff99;
+      animation: scrolling 24s linear infinite;
+    }
+    @keyframes scrolling {
+      from { transform: translateX(860px); }
+      to   { transform: translateX(-100%); }
+    }
+
+    /* HEADER */
+    .header {
+      background: #1a1a2e;
+      padding: 20px 16px 14px;
+      text-align: center;
+      border-bottom: 3px double #888;
+    }
+    .header-name {
+      font-family: 'Times New Roman', serif;
+      font-size: 38px;
+      color: #ffffff;
+      letter-spacing: 4px;
+      font-style: italic;
+      text-shadow: 1px 1px 0 #000080, 2px 2px 8px rgba(100,100,255,0.4);
+    }
+    .header-tagline {
+      font-family: 'Times New Roman', serif;
+      font-size: 13px;
+      color: #aaaacc;
+      margin-top: 5px;
+      letter-spacing: 2px;
+      font-style: italic;
+    }
+    .header-stars { color: #ffcc00; font-size: 14px; margin-top: 6px; letter-spacing: 3px; }
+    .blink { animation: blink 1s step-end infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+    /* NAV BAR */
+    .navbar {
+      background: #ece9d8;
+      border-bottom: 2px solid #808080;
+      border-top: 1px solid #fff;
+      display: flex;
+      flex-wrap: wrap;
+    }
+    .navbar a {
+      display: block;
+      padding: 5px 14px;
+      font-family: 'Times New Roman', serif;
+      font-size: 13px;
+      color: #000080;
+      text-decoration: none;
+      border-right: 1px solid #aaa;
+      font-weight: bold;
+    }
+    .navbar a:hover { background: #000080; color: #ffffff; }
+
+    /* LAYOUT */
+    .main-layout { display: flex; background: white; }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: 155px;
+      min-width: 155px;
+      background: #ece9d8;
+      border-right: 2px solid #808080;
+      padding: 10px 0;
+    }
+    .sidebar-box {
+      margin: 0 6px 10px;
+      border: 2px solid #808080;
+      border-right-color: #fff;
+      border-bottom-color: #fff;
+    }
+    .sidebar-box-inner { border: 1px solid #404040; }
+    .sidebar-box-title {
+      background: linear-gradient(to right, #000080, #1084d0);
+      color: white;
+      font-family: 'Times New Roman', serif;
+      font-size: 11px;
+      font-weight: bold;
+      padding: 2px 6px;
+      text-align: center;
+    }
+    .sidebar-box-body {
+      padding: 6px;
+      font-family: 'Times New Roman', serif;
+      font-size: 11px;
+      color: #000;
+      line-height: 1.8;
+      background: white;
+    }
+    .sidebar-box-body a {
+      display: block;
+      color: #000080;
+      font-size: 12px;
+      padding: 1px 2px;
+      text-decoration: none;
+    }
+    .sidebar-box-body a:hover { background: #000080; color: white; }
+    .status-light {
+      display: inline-block;
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: #00cc00;
+      border: 1px solid #006600;
+      vertical-align: middle;
+      margin-right: 4px;
+    }
+
+    /* CONTENT */
+    .content { flex: 1; padding: 12px; background: white; min-width: 0; }
+
+    .section {
+      border: 2px solid #808080;
+      border-right-color: #fff;
+      border-bottom-color: #fff;
+      margin-bottom: 14px;
+    }
+    .section-inner { border: 1px solid #404040; }
+    .section-header {
+      background: linear-gradient(to right, #000080, #1084d0);
+      color: white;
+      font-family: 'Times New Roman', serif;
+      font-size: 13px;
+      font-weight: bold;
+      padding: 3px 8px;
+      font-style: italic;
+    }
+    .section-body {
+      padding: 10px;
+      font-family: 'Times New Roman', serif;
+      font-size: 13px;
+      line-height: 1.8;
+      color: #111;
+      background: white;
+    }
+
+    /* GALLERY */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      padding: 10px;
+      background: white;
+    }
+    .gallery-item {
+      border: 2px solid #808080;
+      border-right-color: #fff;
+      border-bottom-color: #fff;
+      aspect-ratio: 4/3;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .gallery-item:hover { border-color: #000080; }
+    .gallery-item:hover .gallery-overlay { display: flex; }
+    .gallery-placeholder {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #ece9d8;
+      gap: 4px;
+    }
+    .gallery-icon { font-size: 24px; opacity: 0.4; }
+    .gallery-label { font-family: 'Times New Roman', serif; font-size: 9px; color: #666; font-style: italic; }
+    .gallery-caption {
+      background: #ece9d8;
+      border-top: 1px solid #aaa;
+      padding: 2px 4px;
+      font-family: 'Times New Roman', serif;
+      font-size: 9px;
+      color: #000080;
+      text-align: center;
+      font-style: italic;
+    }
+    .gallery-overlay {
+      display: none;
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,128,0.85);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 8px;
+      text-align: center;
+    }
+    .gallery-overlay-title { font-family: 'Times New Roman', serif; font-size: 12px; color: #fff; font-style: italic; margin-bottom: 3px; }
+    .gallery-overlay-meta { font-family: 'Times New Roman', serif; font-size: 10px; color: #aaaaff; font-style: italic; }
+
+    /* FILM */
+    .film-item {
+      display: flex;
+      gap: 10px;
+      padding: 10px;
+      border-bottom: 1px dashed #aaa;
+      background: white;
+    }
+    .film-item:last-child { border-bottom: none; }
+    .film-thumb {
+      width: 80px; min-width: 80px; height: 52px;
+      background: #ece9d8;
+      border: 2px inset #808080;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; color: #000080;
+    }
+    .film-title { font-family: 'Times New Roman', serif; font-size: 13px; font-weight: bold; color: #000080; font-style: italic; margin-bottom: 2px; }
+    .film-meta { font-family: 'Times New Roman', serif; font-size: 11px; color: #666; margin-bottom: 4px; }
+    .film-desc { font-family: 'Times New Roman', serif; font-size: 12px; color: #333; line-height: 1.6; }
+    .tag {
+      display: inline-block;
+      background: #ece9d8;
+      border: 1px solid #aaa;
+      font-family: 'Times New Roman', serif;
+      font-size: 9px;
+      color: #444;
+      padding: 0 5px;
+      margin: 2px 2px 0 0;
+      font-style: italic;
+    }
+
+    /* COMMISSIONS */
+    .comm-table { width: 100%; border-collapse: collapse; font-family: 'Times New Roman', serif; font-size: 12px; }
+    .comm-table th { background: #ece9d8; border: 1px solid #aaa; padding: 4px 8px; font-weight: bold; text-align: left; color: #000080; }
+    .comm-table td { border: 1px solid #ddd; padding: 6px 8px; vertical-align: top; color: #222; }
+    .comm-table tr:nth-child(even) td { background: #f8f8f0; }
+    .price { color: #000080; font-weight: bold; font-size: 13px; }
+    .open-badge { background: #ccffcc; border: 1px solid #006600; color: #004400; font-size: 10px; padding: 1px 6px; font-family: 'Times New Roman', serif; }
+    .closed-badge { background: #ffcccc; border: 1px solid #660000; color: #440000; font-size: 10px; padding: 1px 6px; font-family: 'Times New Roman', serif; }
+
+    /* ABOUT */
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 10px; background: white; }
+    .about-block { border: 2px solid #808080; border-right-color: #fff; border-bottom-color: #fff; }
+    .about-block-inner { border: 1px solid #404040; }
+    .about-block-title { background: #ece9d8; border-bottom: 1px solid #aaa; padding: 3px 8px; font-family: 'Times New Roman', serif; font-size: 12px; font-weight: bold; color: #000080; font-style: italic; }
+    .about-block-body { padding: 8px; font-family: 'Times New Roman', serif; font-size: 12px; color: #222; line-height: 1.8; background: white; }
+    .skill-bar { margin: 5px 0; }
+    .skill-name { font-family: 'Times New Roman', serif; font-size: 11px; color: #333; margin-bottom: 2px; font-style: italic; }
+    .skill-track { height: 8px; background: #ece9d8; border: 1px inset #aaa; }
+    .skill-fill { height: 100%; background: linear-gradient(to right, #000080, #4040cc); }
+
+    /* CONTACT */
+    .contact-table { width: 100%; border-collapse: collapse; font-family: 'Times New Roman', serif; font-size: 12px; }
+    .contact-table td { padding: 6px 10px; border: 1px solid #ddd; vertical-align: top; }
+    .contact-table tr:nth-child(even) td { background: #f8f8f0; }
+    .contact-label { font-weight: bold; color: #000080; font-style: italic; width: 120px; }
+    .contact-note { font-size: 10px; color: #888; font-style: italic; }
+
+    hr.fancy { border: none; border-top: 1px solid #aaa; border-bottom: 1px solid #fff; margin: 8px 0; }
+
+    /* FOOTER */
+    .counter-section {
+      background: #ece9d8;
+      border-top: 1px solid #aaa;
+      text-align: center;
+      padding: 8px;
+      font-family: 'Times New Roman', serif;
+      font-size: 11px;
+      color: #444;
+      font-style: italic;
+    }
+    .counter-digits {
+      font-family: 'Courier New', monospace;
+      font-size: 18px;
+      display: inline-block;
+      background: #000;
+      color: #00ff00;
+      padding: 2px 10px;
+      border: 2px inset #808080;
+      letter-spacing: 4px;
+    }
+    .resolution-note {
+      font-family: 'Times New Roman', serif;
+      font-size: 9px;
+      color: #888;
+      text-align: center;
+      padding: 4px;
+      font-style: italic;
+      background: #ece9d8;
+    }
+    .footer {
+      background: #ece9d8;
+      border-top: 2px solid #808080;
+      border-bottom: 2px solid #fff;
+      padding: 6px 12px;
+      font-family: 'Times New Roman', serif;
+      font-size: 11px;
+      color: #333;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-style: italic;
+    }
+    .footer-clock { font-family: 'Courier New', monospace; font-size: 12px; color: #000080; }
+    .statusbar {
+      background: #d4d0c8;
+      border-top: 1px solid #fff;
+      padding: 2px 6px;
+      font-family: 'Times New Roman', serif;
+      font-size: 10px;
+      color: #444;
+      display: flex;
+      gap: 12px;
+    }
+    .statusbar-panel { border: 1px solid #808080; border-right-color: #fff; border-bottom-color: #fff; padding: 0 6px; }
+  </style>
+</head>
+<body>
+
+<div class="outer-frame">
+
+
+
+  <div class="marquee-wrap">
+    <span class="marquee-inner" id="marquee-text">
+  Loading headlines...
+</span>
+  </div>
+
+  <div class="header">
+    <div class="header-name">AL OLDAK<span class="blink">|</span></div>
+    <div class="header-tagline">Digital Artist &nbsp;·&nbsp; Filmmaker &nbsp;·&nbsp; Illustrator &nbsp;·&nbsp; Printmaking &nbsp;·&nbsp; Fibers</div>
+    <div class="header-stars">★ ★ ★ ★ ★</div>
+  </div>
+
+  <div class="navbar">
+    <a href="#gallery">Gallery</a>
+    <a href="#film">Film</a>
+    <a href="#commissions">Commissions</a>
+    <a href="#about">About Me</a>
+    <a href="#contact">Contact</a>
+  </div>
+
+  <div class="main-layout">
+
+    <div class="sidebar">
+
+      <div class="sidebar-box">
+        <div class="sidebar-box-inner">
+          <div class="sidebar-box-title">Navigation</div>
+          <div class="sidebar-box-body">
+            <a href="#gallery">🖼 Gallery</a>
+            <a href="#film">🎬 Film</a>
+            <a href="#commissions">✏️ Commissions</a>
+            <a href="#about">😊 About Me</a>
+            <a href="#contact">✉️ Contact</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-box">
+        <div class="sidebar-box-inner">
+          <div class="sidebar-box-title">Status</div>
+          <div class="sidebar-box-body">
+            <span class="status-light"></span>Online<br><br>
+            Commissions:<br>
+            <b style="color:green;">OPEN</b><br><br>
+            Turnaround:<br>1–2 weeks
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-box">
+        <div class="sidebar-box-inner">
+          <div class="sidebar-box-title">Specialties</div>
+          <!-- <div class="sidebar-box-body">
+            ♦ Concept Art<br>
+            ♦ Graphic Design<br>
+            ♦ Short Film<br>
+            ♦ Motion Graphics<br>
+            ♦ Illustration
+          </div> -->
+        </div>
+      </div>
+
+      <div class="sidebar-box">
+        <div class="sidebar-box-inner">
+          <div class="sidebar-box-title">Tools I Use</div>
+          <!-- <div class="sidebar-box-body">
+            Photoshop 7<br>
+            Illustrator<br>
+            After Effects<br>
+            Premiere<br>
+            <br>
+            Blender
+          </div> -->
+        </div>
+      </div>
+
+      <div class="sidebar-box">
+        <div class="sidebar-box-inner">
+          <div class="sidebar-box-title">Mood</div>
+          <div class="sidebar-box-body" style="text-align:center;">
+            <div style="font-size:26px;">🎨</div>
+            <div style="color:#000080; font-style:italic;">inspired</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="content">
+
+      <!-- GALLERY -->
+      <div class="section" id="gallery">
+        <div class="section-inner">
+          <div class="section-header">✦ Digital Art Gallery</div>
+          <div class="gallery-grid">
+<!-- 
+            <div class="gallery-item">
+              <div class="gallery-placeholder"><div class="gallery-icon">🖼</div><div class="gallery-label">your image here</div></div>
+              <div class="gallery-caption">Piece Title</div>
+              <div class="gallery-overlay"><div class="gallery-overlay-title">Piece Title</div><div class="gallery-overlay-meta">Digital Illustration · 2003</div></div>
+            </div>
+
+            <div class="gallery-item">
+              <div class="gallery-placeholder"><div class="gallery-icon">🖼</div><div class="gallery-label">your image here</div></div>
+              <div class="gallery-caption">Piece Title</div>
+              <div class="gallery-overlay"><div class="gallery-overlay-title">Piece Title</div><div class="gallery-overlay-meta">Concept Art · 2003</div></div>
+            </div>
+
+            <div class="gallery-item">
+              <div class="gallery-placeholder"><div class="gallery-icon">🖼</div><div class="gallery-label">your image here</div></div>
+              <div class="gallery-caption">Piece Title</div>
+              <div class="gallery-overlay"><div class="gallery-overlay-title">Piece Title</div><div class="gallery-overlay-meta">Character Design · 2003</div></div>
+            </div>
+
+            <div class="gallery-item">
+              <div class="gallery-placeholder"><div class="gallery-icon">🖼</div><div class="gallery-label">your image here</div></div>
+              <div class="gallery-caption">Piece Title</div>
+              <div class="gallery-overlay"><div class="gallery-overlay-title">Piece Title</div><div class="gallery-overlay-meta">Digital Illustration · 2003</div></div>
+            </div>
+
+            <div class="gallery-item">
+              <div class="gallery-placeholder"><div class="gallery-icon">🖼</div><div class="gallery-label">your image here</div></div>
+              <div class="gallery-caption">Piece Title</div>
+              <div class="gallery-overlay"><div class="gallery-overlay-title">Piece Title</div><div class="gallery-overlay-meta">Environment Art · 2003</div></div>
+            </div>
+
+            <div class="gallery-item">
+              <div class="gallery-placeholder"><div class="gallery-icon">🖼</div><div class="gallery-label">your image here</div></div>
+              <div class="gallery-caption">Piece Title</div>
+              <div class="gallery-overlay"><div class="gallery-overlay-title">Piece Title</div><div class="gallery-overlay-meta">Concept Art · 2003</div></div>
+            </div> -->
+
+          </div>
+          <div class="section-body" style="font-size:10px; color:#888; text-align:center; padding:6px; border-top:1px solid #ddd;">
+            <i>↑</i>
+          </div>
+        </div>
+      </div>
+
+      <!-- FILM -->
+      <div class="section" id="film">
+        <div class="section-inner">
+          <div class="section-header">✦ Film Work</div>
+
+          <div class="film-item">
+            <div class="film-thumb">▶</div>
+            <!-- <div>
+              <div class="film-title">Film Title One</div>
+              <div class="film-meta">Short Film &nbsp;·&nbsp; 2003 &nbsp;·&nbsp; 8 min</div>
+              <div class="film-desc">A brief description of this film — what it's about, the concept, and any techniques or equipment used. Keep it to one or two sentences.</div>
+              <div style="margin-top:5px;"><span class="tag">narrative</span><span class="tag">experimental</span><span class="tag">16mm</span></div>
+            </div> -->
+          </div>
+
+          <div class="film-item">
+            <div class="film-thumb">▶</div>
+            <!-- <div>
+              <div class="film-title">Film Title Two</div>
+              <div class="film-meta">Motion Graphics &nbsp;·&nbsp; 2003 &nbsp;·&nbsp; 3 min</div>
+              <div class="film-desc">A brief description of this project — the intent, the audience, and the tools and methods involved in production.</div>
+              <div style="margin-top:5px;"><span class="tag">animation</span><span class="tag">motion graphics</span></div>
+            </div> -->
+          </div>
+
+          <div class="film-item">
+            <div class="film-thumb">▶</div>
+            <!-- <div>
+              <div class="film-title">Film Title Three</div>
+              <div class="film-meta">Documentary &nbsp;·&nbsp; 2002 &nbsp;·&nbsp; 14 min</div>
+              <div class="film-desc">A brief description — what story you're telling, what drew you to the subject, and your approach to the cinematography.</div>
+              <div style="margin-top:5px;"><span class="tag">documentary</span><span class="tag">DV</span></div>
+            </div> -->
+          </div>
+
+        </div>
+      </div>
+
+      <!-- COMMISSIONS -->
+      <div class="section" id="commissions">
+        <div class="section-inner">
+          <div class="section-header">✦ Commissions</div>
+          <div class="section-body">
+            <span class="open-badge">● Commissions Open</span>
+            &nbsp;&nbsp;<i style="font-size:11px; color:#666;">Typical turnaround: 1–2 weeks. Payment via PayPal.</i>
+            <hr class="fancy">
+            <!-- <table class="comm-table">
+              <thead>
+                <tr>
+                  <th>Type</th>
+                  <th>Description</th>
+                  <th>Starting at</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><b>Character Illustration</b></td>
+                  <td>Full-body digital illustration, flat or rendered, custom background optional</td>
+                  <td class="price">$XX</td>
+                  <td><span class="open-badge">Open</span></td>
+                </tr>
+                <tr>
+                  <td><b>Bust / Portrait</b></td>
+                  <td>Waist-up or portrait, detailed shading, simple background included</td>
+                  <td class="price">$XX</td>
+                  <td><span class="open-badge">Open</span></td>
+                </tr>
+                <tr>
+                  <td><b>Concept Art</b></td>
+                  <td>Environment, creature, or prop concepting for games, film, or print</td>
+                  <td class="price">$XX</td>
+                  <td><span class="open-badge">Open</span></td>
+                </tr>
+                <tr>
+                  <td><b>Motion Graphics</b></td>
+                  <td>Short animated sequences, title cards, logo animation</td>
+                  <td class="price">$XX</td>
+                  <td><span class="closed-badge">Closed</span></td>
+                </tr>
+              </tbody>
+            </table> -->
+            <hr class="fancy">
+            <p style="font-size:11px; color:#666; font-style:italic;">Prices listed are starting rates — complexity may increase the final cost. Commercial use rights available, please ask for a quote.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ABOUT -->
+      <div class="section" id="about">
+        <div class="section-inner">
+          <div class="section-header">✦ About Me</div>
+          <div class="about-grid">
+            <div class="about-block">
+              <div class="about-block-inner">
+                <div class="about-block-title">Bio</div>
+                <div class="about-block-body">I love life. Boston based.</div>
+              </div>
+            </div>
+            <!-- <div class="about-block">
+              <div class="about-block-inner">
+                <div class="about-block-title">Skills</div>
+                <div class="about-block-body">
+                  <div class="skill-bar"><div class="skill-name">Graphic Design</div><div class="skill-track"><div class="skill-fill" style="width:80%"></div></div></div>
+                  <div class="skill-bar"><div class="skill-name">Concept Art</div><div class="skill-track"><div class="skill-fill" style="width:70%"></div></div></div>
+                  <div class="skill-bar"><div class="skill-name">Film & Editing</div><div class="skill-track"><div class="skill-fill" style="width:60%"></div></div></div>
+                  <div class="skill-bar"><div class="skill-name">Photography</div><div class="skill-track"><div class="skill-fill" style="width:50%"></div></div></div>
+                  <div class="skill-bar"><div class="skill-name">3D / Blender</div><div class="skill-track"><div class="skill-fill" style="width:40%"></div></div></div>
+                </div>
+              </div>
+            </div> -->
+          </div>
+        </div>
+      </div>
+
+      <!-- CONTACT -->
+      <div class="section" id="contact">
+        <div class="section-inner">
+          <div class="section-header">✦ Contact</div>
+          <div class="section-body">
+            <table class="contact-table">
+              <tr>
+                <td class="contact-label">Email</td>
+                <td><a href="mailto:101aloldak101@gmail.com">101aloldak101@gmail.com</a><br><span class="contact-note">Best for commission inquiries</span></td>
+              </tr>
+              
+              <tr>
+                <td class="contact-label">Response Time</td>
+                <td>Usually within 48 hours<br><span class="contact-note">Please be patient — I do this while also having a life!</span></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="counter-section">
+        <i>You are visitor number</i><br>
+        <div class="counter-digits" id="counter">0004721</div><br>
+        <i style="font-size:10px;">since August 2003</i>
+      </div>
+
+      <div class="resolution-note">Best viewed in Internet Explorer 6 at 1024×768 resolution</div>
+
+    </div>
+  </div>
+
+  <div class="footer">
+    <span>© 1999 AL OLDAK — all rights reserved — please don't steal my art!!! I will sue</span>
+    <span class="footer-clock" id="clock">00:00:00</span>
+  </div>
+
+  <div class="statusbar">
+    <span class="statusbar-panel">Done</span>
+   
+  </div>
+
+</div>
+
+<script>
+  function updateClock() {
+    const now = new Date();
+    const h = String(now.getHours()).padStart(2,'0');
+    const m = String(now.getMinutes()).padStart(2,'0');
+    const s = String(now.getSeconds()).padStart(2,'0');
+    document.getElementById('clock').textContent = h + ':' + m + ':' + s;
+  }
+  updateClock();
+  setInterval(updateClock, 1000);
+
+  let count = 4721;
+  setInterval(() => {
+    count++;
+    document.getElementById('counter').textContent = String(count).padStart(7,'0');
+  }, 5000);
+
+  const rssFeed = "https://feeds.bbci.co.uk/news/rss.xml";
+const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssFeed)}`;
+
+fetch(apiUrl)
+  .then(r => r.json())
+  .then(data => {
+  if (data.items && data.items.length > 0) {
+    const headlines = data.items
+      .map(item => item.title)
+      .join("   ✦   ");
+    
+    const marquee = document.getElementById("marquee-text");
+    marquee.textContent = headlines;
+
+    // Adjust speed based on text length
+    const duration = headlines.length * 0.15; // seconds
+    marquee.style.animationDuration = duration + "s";
+  }
+})
+  .catch(() => {
+    // If the fetch fails, the default text just stays
+  });
+</script>
+
+</body>
+</html>
